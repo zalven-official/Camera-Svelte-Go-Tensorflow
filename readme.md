@@ -1,8 +1,10 @@
-# Client Side
 ## Tech Stack
 - Rustc 1.64.0
 - Yew v0.19
 - Tailwind css v3.1.8
+- Go v1.18
+
+# Client Side
 
 ## Running Client Side
 0. Dependecies before starting
@@ -45,9 +47,13 @@ Go to the settings json file and add this script below.
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
+  "rust-analyzer.server.extraEnv": {
+    "RUSTFLAGS": "--cfg=web_sys_unstable_apis"
+  }
 ```
 
 
 ---
+
 
 # Running Server Side 
