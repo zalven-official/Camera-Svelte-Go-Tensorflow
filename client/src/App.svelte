@@ -1,6 +1,11 @@
 <script lang="ts">
-  import svelteLogo from "./assets/svelte.svg";
-  import Counter from "./lib/Counter.svelte";
+  import Router from "svelte-spa-router";
+  import Home from "./pages/Home.svelte";
+  import NotFound from "./pages/NotFound.svelte";
+  const routes = {
+    "/": Home,
+    "*": NotFound,
+  };
 </script>
 
-<main><h1 class="text-3xl font-bold underline">Hello world!</h1></main>
+<main><Router {routes} /></main>

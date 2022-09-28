@@ -25,6 +25,7 @@
   "dependencies": {
     "daisyui": "^2.31.0",
     "sass": "^1.55.0",
-    "scss": "^0.2.4"
+    "scss": "^0.2.4",
+    "svelte-spa-router": "^3.3.0"
   }
 }
