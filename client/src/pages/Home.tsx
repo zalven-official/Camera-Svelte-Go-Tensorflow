@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Webcam from 'react-webcam';
 import { SiTensorflow } from 'react-icons/si';
 import { MdCameraRoll } from 'react-icons/md';
 import { RiScreenshot2Line } from 'react-icons/ri';
+import axios from 'axios';
 import useMediaDevices from '../helpers/useMediaDevices';
 import useScreenShot from '../helpers/useScreenShot';
 import useChangeCamera from '../helpers/useChangeCamera';
@@ -10,14 +11,20 @@ import useChangeCamera from '../helpers/useChangeCamera';
 function Home() {
   const [deviceId, onChangeCamera] = useChangeCamera();
   const devices = useMediaDevices();
-  const [webcamRef, webcamImg, webcamCapture] = useScreenShot((image) => {
-    console.log(image);
+
+  const [isCapture, setIsCapture] = useState(false);
+  function showModal() {
+    setIsCapture(!isCapture);
+  }
+  const [captureTensor, setOutputTensor] = useState<string>();
+  const [webcamRef, webcamImg, webcamCapture] = useScreenShot(async () => {
+    showModal();
   });
 
   return (
     <div className="flex h-screen  m-5 ">
       <div className="flex flex-col w-full lg:flex-row my-24 lg:m-auto ">
-        <div className="shadow-2xl bg-base-300 rounded-box place-items-center w-full">
+        <div className="shadow-xl bg-base-300 rounded-box place-items-center w-full">
           <p className="text-lg p-5 font-bold flex">
             <MdCameraRoll className="w-10 m-1" />
             Camera Input
@@ -45,11 +52,7 @@ function Home() {
                   );
                 })}
               </select>
-              <button
-                onClick={webcamCapture}
-                className="btn w-16 m-0"
-                type="button"
-              >
+              <button onClick={webcamCapture} className="btn " type="button">
                 <RiScreenshot2Line className="rounded-3xl" size={30} />
               </button>
             </div>
@@ -57,7 +60,7 @@ function Home() {
         </div>
 
         <div className="divider lg:divider-horizontal">*</div>
-        <div className="shadow-2xl bg-base-300 rounded-box place-items-center w-full">
+        <div className="shadow-xl bg-base-300 rounded-box place-items-center w-full">
           <p className="text-lg p-5 font-bold flex text-center">
             <SiTensorflow className="w-10 mt-1" />
             Tensor Output
@@ -70,6 +73,28 @@ function Home() {
           />
         </div>
       </div>
+      {isCapture && (
+        <>
+          <input type="checkbox" className="modal-toggle" defaultChecked />
+          <div className="modal modal-bottom sm:modal-middle">
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">Tensor Output</h3>
+              <p className="py-4">
+                <img src={webcamImg} alt="webcam-img" />
+              </p>
+              <div className="modal-action">
+                <button
+                  className="btn btn-error btn-outline"
+                  type="button"
+                  onClick={showModal}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

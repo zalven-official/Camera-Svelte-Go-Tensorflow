@@ -28,9 +28,10 @@ func reader(conn *websocket.Conn) {
 		}
 	}
 }
-func homepage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Homepage")
-}
+
+// func homepage(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprint(w, "Homepage")
+// }
 func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 
@@ -41,8 +42,12 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	log.Println("Client Successfully Connected...")
 	reader(ws)
 }
+
+func onCapture(w http.ResponseWriter, r *http.Request) {
+	log.Println("On Capture")
+}
 func setupRoutes() {
-	http.HandleFunc("/", homepage)
+	// http.HandleFunc("/", homepage)
 	http.HandleFunc("/ws", wsEndpoint)
 }
 
